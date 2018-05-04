@@ -18,14 +18,28 @@ public:
 	void push_back(const T &t) { data->push_back(t); }
 	void push_back(T &&t) { data->push_back(std::move(t)); }
 	void pop_back(); 
+	void pop_back() const;
 
 	T& back();
 	T& operator[](size_type i);
+	Blob returnSelf();
 private:
 	std::shared_ptr<std::vector<T>> data;
 	void check(size_type i, const std::string &msg) const;
 };
 
+template<typename T>
+Blob<T> Blob<T>::returnSelf()
+{
+	Blob temp = *this;
+	return temp;
+}
+
+template<typename T>
+void Blob<T>::pop_back() const
+{
+	const_cast<const T>(this)->pop_back();
+}
 
 //template <typename T>
 //inline int compare(const T &v1, const T &v2) {
@@ -74,7 +88,7 @@ Blob<T>::Blob(std::initializer_list<T> il)
 }
 
 template<typename T>
-Blob<T>::size_type Blob<T>::size() const
+typename Blob<T>::size_type Blob<T>::size() const
 {
 	return data->size();
 }
